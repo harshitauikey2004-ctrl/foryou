@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The End ❤️</title>
+
+  <style>
+    body{
+      margin:0;
+      height:100vh;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      background:#5b3a29;
+      font-family:'Poppins', sans-serif;
+      animation:pageIn 0.8s ease-in;
+    }
+
+    @keyframes pageIn{
+      from{opacity:0;}
+      to{opacity:1;}
+    }
+
+    @keyframes pageOut{
+      from{opacity:1;}
+      to{opacity:0;}
+    }
+
+    body.fade-out{
+      animation:pageOut 0.6s ease-out forwards;
+    }
+
+    .container{
+      text-align:center;
+      color:#fffaf0;
+    }
+
+    a{
+      text-decoration:none;
+      padding:12px 28px;
+      border-radius:30px;
+      background:#e07a8d;
+      color:white;
+      font-size:1rem;
+      transition:all 0.3s ease;
+      display:inline-block;
+      box-shadow:0 4px 15px rgba(224, 122, 141, 0.3);
+    }
+
+    a:hover{
+      background:#ff9aa2;
+      transform:scale(1.08);
+      box-shadow:0 6px 25px rgba(224, 122, 141, 0.5);
+    }
+
+    a:active{
+      transform:scale(0.95);
+    }
+
+    .popping-heart{
+      position:fixed;
+      pointer-events:none;
+      font-size:2rem;
+      z-index:10;
+    }
+
+    @keyframes popUp{
+      0%{
+        transform:translateY(0) scale(0.5);
+        opacity:1;
+      }
+      100%{
+        transform:translateY(-120px) scale(1);
+        opacity:0;
+      }
+    }
+
+    .popping-heart.active{
+      animation:popUp 1.5s ease-out forwards;
+    }
+
+    .flower{
+      position:fixed;
+      pointer-events:none;
+      font-size:2.5rem;
+      z-index:10;
+    }
+
+    @keyframes flowerDrift{
+      0%{
+        transform:translateY(0) scale(0.3) rotateZ(0deg);
+        opacity:1;
+      }
+      100%{
+        transform:translateY(-200px) scale(1) rotateZ(360deg);
+        opacity:0;
+      }
+    }
+
+    .flower.active{
+      animation:flowerDrift 3s ease-out forwards;
+    }
+
+    .letter-box{
+      background:rgba(224, 122, 141, 0.2);
+      border:2px solid #e07a8d;
+      border-radius:10px;
+      padding:25px;
+      margin-bottom:30px;
+      max-width:350px;
+      box-shadow:0 0 25px rgba(224, 122, 141, 0.5), inset 0 0 15px rgba(224, 122, 141, 0.15);
+      backdrop-filter:blur(10px);
+      animation:slideDown 0.8s ease forwards;
+      position:relative;
+    }
+
+    .letter-box::before{
+      content:'';
+      position:absolute;
+      top:-15px;
+      left:50%;
+      transform:translateX(-50%);
+      width:0;
+      height:0;
+      border-left:25px solid transparent;
+      border-right:25px solid transparent;
+      border-top:15px solid #e07a8d;
+    }
+
+    .letter-content{
+      color:#fffaf0;
+      font-size:1rem;
+      line-height:1.6;
+      font-style:italic;
+    }
+
+    @keyframes slideDown{
+      from{
+        opacity:0;
+        transform:translateY(-20px);
+      }
+      to{
+        opacity:1;
+        transform:translateY(0);
+      }
+    }
+
+    /* Floating background elements */
+    .floating-element{
+      position:fixed;
+      font-size:3rem;
+      opacity:0.08;
+      pointer-events:none;
+      z-index:1;
+      animation:float 20s infinite ease-in-out;
+    }
+
+    @keyframes float{
+      0%, 100%{
+        transform:translateY(0px) translateX(0px);
+      }
+      50%{
+        transform:translateY(-30px) translateX(20px);
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Floating background elements -->
+  <div class="floating-element" style="top:10%; left:5%;">💕</div>
+  <div class="floating-element" style="top:50%; right:8%; animation-delay:2s;">✨</div>
+
+  <div class="container">
+    <div class="letter-box">
+      <div class="letter-content">
+         ✨<br><br>
+Happy Valentine's Day
+I really like you
+and I like how things feel with you.
+ aur mujhe acha lgta h ki woh tum ho Soni. 
+
+        Forever yours ❤️
+      </div>
+    </div>
+    <a href="index.html" style="margin-top:20px;">Start Over </a>
+  </div>
+
+<script>
+  // Page transition on button click
+  document.querySelectorAll('a').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      if (btn.href.includes('index')) {
+        e.preventDefault();
+        document.body.classList.add('fade-out');
+        setTimeout(() => {
+          window.location.href = btn.href;
+        }, 600);
+      }
+    });
+  });
+
+  function startPopHearts(){
+    function createHeart(){
+      const heart = document.createElement("div");
+      heart.classList.add("popping-heart");
+      heart.textContent = "❤️";
+      
+      const randomX = Math.random() * window.innerWidth;
+      heart.style.left = randomX + "px";
+      heart.style.bottom = "0px";
+      
+      document.body.appendChild(heart);
+      
+      setTimeout(()=>{
+        heart.classList.add("active");
+      },10);
+      
+      setTimeout(()=>{
+        heart.remove();
+      },1600);
+    }
+    
+    const heartInterval = setInterval(createHeart, 300);
+    
+    setTimeout(()=>{
+      clearInterval(heartInterval);
+    },8000);
+  }
+
+  function startFlowerAnimation(){
+    const flowers = ['🌸', '🌼', '🌻', '🌷', '🌹'];
+    
+    function createFlower(){
+      const flower = document.createElement("div");
+      flower.classList.add("flower");
+      flower.textContent = flowers[Math.floor(Math.random() * flowers.length)];
+      
+      const randomX = Math.random() * window.innerWidth;
+      flower.style.left = randomX + "px";
+      flower.style.bottom = "0px";
+      
+      document.body.appendChild(flower);
+      
+      setTimeout(()=>{
+        flower.classList.add("active");
+      },10);
+      
+      setTimeout(()=>{
+        flower.remove();
+      },3100);
+    }
+    
+    const flowerInterval = setInterval(createFlower, 400);
+    
+    setTimeout(()=>{
+      clearInterval(flowerInterval);
+    },12000);
+  }
+  
+  startPopHearts();
+  startFlowerAnimation();
+</script>
+
+</body>
+</html>

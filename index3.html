@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Question 🤍</title>
+
+<style>
+body {
+    margin: 0;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(135deg, #000000, #5a3e2b, #ff8fa3);
+    font-family: 'Segoe UI', sans-serif;
+    text-align: center;
+    color: white;
+    overflow: hidden;
+}
+
+.container {
+    max-width: 400px;
+}
+
+h1 {
+    font-weight: 500;
+    margin-bottom: 30px;
+    transition: 0.5s;
+}
+
+button {
+    padding: 10px 25px;
+    margin: 10px;
+    border: none;
+    border-radius: 25px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: 0.3s ease;
+}
+
+.yes {
+    background: #ff6b81;
+    color: white;
+}
+
+.yes:hover {
+    transform: scale(1.1);
+}
+
+.no {
+    background: #d2b48c; /* light brown */
+    color: black;
+}
+
+.no:hover {
+    transform: scale(1.1);
+}
+
+.message {
+    margin-top: 20px;
+    font-size: 16px;
+    min-height: 30px;
+    transition: opacity 0.5s ease;
+}
+
+/* Floating hearts */
+.heart {
+    position: absolute;
+    color: #ff8fa3;
+    font-size: 20px;
+    animation: float 4s linear forwards;
+}
+
+@keyframes float {
+    0% { transform: translateY(0); opacity: 1; }
+    100% { transform: translateY(-600px); opacity: 0; }
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+    <h1 id="question">Can I ask you something? 🤍</h1>
+
+    <button class="yes" onclick="yesClicked()">Yes</button>
+    <button class="no" onclick="noClicked()">No</button>
+
+    <div class="message" id="message"></div>
+</div>
+
+<script>
+
+let stage = 1;
+
+const tantrumsStage1 = [
+    "Pleaaasee 🥺 just one tiny thing.",
+    "It’s small I promiseee 🤏",
+    "Don’t say nooo I’ll cryyy 😭 (fake cry only)",
+    "Okay but just listen first naaa 🤍"
+];
+
+const tantrumsStage2 = [
+    "Arey nooo 🥺 I’ll be very nice.",
+    "I’ll sit quietly like a good kid 🤍",
+    "Just let me like you thoda saaa 😭",
+    "I won’t trouble you… maybe a little 😌"
+];
+let index = 0;
+
+function noClicked() {
+    const messageDiv = document.getElementById("message");
+    messageDiv.style.opacity = 0;
+
+    setTimeout(() => {
+        if(stage === 1){
+            messageDiv.innerText = tantrumsStage1[index];
+        } else {
+            messageDiv.innerText = tantrumsStage2[index];
+        }
+        messageDiv.style.opacity = 1;
+        index = (index + 1) % 3;
+    }, 300);
+}
+
+function yesClicked() {
+
+    const question = document.getElementById("question");
+    const messageDiv = document.getElementById("message");
+    messageDiv.innerText = "";
+
+    if(stage === 1){
+        // Move to second question
+        question.innerText = "Can I keep liking you this way? 🤍";
+        stage = 2;
+        index = 0;
+        return;
+    }
+
+    if(stage === 2){
+        // Celebration
+        for (let i = 0; i < 25; i++) {
+            let heart = document.createElement("div");
+            heart.className = "heart";
+            heart.innerHTML = "🤍";
+            heart.style.left = Math.random() * window.innerWidth + "px";
+            heart.style.bottom = "0px";
+            heart.style.fontSize = (Math.random() * 20 + 15) + "px";
+            document.body.appendChild(heart);
+
+            setTimeout(() => {
+                heart.remove();
+            }, 4000);
+        }
+
+        document.body.style.boxShadow = "inset 0 0 100px rgba(255,105,135,0.6)";
+
+        setTimeout(() => {
+            window.location.href = "index4.html";
+        }, 4000);
+    }
+}
+
+</script>
+
+</body>
+</html>

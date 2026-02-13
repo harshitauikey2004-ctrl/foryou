@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Heart ❤️</title>
+
+<style>
+  body{
+    margin:0;
+    height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:#140b07;
+    overflow:hidden;
+    font-family:'Poppins', sans-serif;
+    animation:pageIn 0.8s ease-in;
+  }
+
+  @keyframes pageIn{
+    from{opacity:0;}
+    to{opacity:1;}
+  }
+
+  @keyframes pageOut{
+    from{opacity:1;}
+    to{opacity:0;}
+  }
+
+  body.fade-out{
+    animation:pageOut 0.6s ease-out forwards;
+  }
+
+  .wrapper{
+    position:relative;
+    width:450px;
+    height:400px;
+    filter:drop-shadow(0 0 30px rgba(255, 111, 145, 0.5));
+  }
+
+  svg{
+    width:100%;
+    height:100%;
+  }
+
+  path{
+    fill:none;
+    stroke:#ff6f91;
+    stroke-width:4;
+    stroke-dasharray:1200;
+    stroke-dashoffset:1200;
+    animation: drawHeart 5s ease-in-out forwards;
+    filter: drop-shadow(0 0 12px #ff6f91);
+  }
+
+  @keyframes drawHeart{
+    to{
+      stroke-dashoffset:0;
+    }
+  }
+
+  /* soft heartbeat after drawing */
+  .wrapper.beat svg{
+    animation: beat 2s infinite ease-in-out;
+  }
+
+  @keyframes beat{
+    0%,100%{transform:scale(1);}
+    50%{transform:scale(1.05);}
+  }
+
+  .text{
+    position:absolute;
+    top:50%;
+    left:50%;
+    transform:translate(-50%,-50%);
+    color:#fffaf0;
+    font-size:1.25rem;
+    text-align:center;
+    opacity:0;
+    transition:1.5s;
+    line-height:1.4;
+    min-height:80px;
+  }
+
+  .next{
+    display:inline-block;
+    margin-top:25px;
+    padding:12px 30px;
+    border-radius:30px;
+    background:#e07a8d;
+    color:white;
+    text-decoration:none;
+    font-size:1rem;
+    opacity:0;
+    transition:all 0.3s ease;
+    box-shadow:0 4px 15px rgba(224, 122, 141, 0.3);
+  }
+
+  .next:hover{
+    background:#ff9aa2;
+    transform:scale(1.08);
+    box-shadow:0 6px 25px rgba(224, 122, 141, 0.5);
+  }
+
+  .next:active{
+    transform:scale(0.95);
+  }
+
+  .popping-heart{
+    position:fixed;
+    pointer-events:none;
+    font-size:2rem;
+    z-index:10;
+  }
+
+  @keyframes popUp{
+    0%{
+      transform:translateY(0) scale(0.5);
+      opacity:1;
+    }
+    100%{
+      transform:translateY(-120px) scale(1);
+      opacity:0;
+    }
+  }
+
+  .popping-heart.active{
+    animation:popUp 1.5s ease-out forwards;
+  }
+
+  /* Floating background elements */
+  .floating-element{
+    position:fixed;
+    font-size:3rem;
+    opacity:0.05;
+    pointer-events:none;
+    z-index:1;
+    animation:float 20s infinite ease-in-out;
+  }
+
+  @keyframes float{
+    0%, 100%{
+      transform:translateY(0px) translateX(0px);
+    }
+    50%{
+      transform:translateY(-30px) translateX(20px);
+    }
+  }
+
+  .music-toggle{
+    position:fixed;
+    bottom:20px;
+    right:20px;
+    width:50px;
+    height:50px;
+    background:rgba(224, 122, 141, 0.3);
+    border:2px solid #e07a8d;
+    border-radius:50%;
+    cursor:pointer;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:1.5rem;
+    z-index:100;
+    transition:all 0.3s ease;
+    backdrop-filter:blur(10px);
+  }
+
+  .music-toggle:hover{
+    background:rgba(224, 122, 141, 0.5);
+    transform:scale(1.1);
+  }
+
+  .music-toggle.active{
+    box-shadow:0 0 20px rgba(224, 122, 141, 0.6);
+  }
+</style>
+</head>
+
+<body>
+  <!-- Floating background elements -->
+  <div class="floating-element" style="top:10%; left:5%;">💕</div>
+  <div class="floating-element" style="top:50%; right:8%; animation-delay:2s;">✨</div>
+
+<div class="wrapper" id="heartWrap">
+
+  <svg viewBox="0 0 512 512">
+    <path d="M256 448s-168-104-168-232c0-53 43-96 96-96 36 0 68 17 88 44 20-27 52-44 88-44 53 0 96 43 96 96 0 128-168 232-168 232z"/>
+  </svg>
+
+  <div class="text" id="msg">
+    Happy Valentine<br> BAbyyyy❤️
+  </div>
+
+</div>
+
+<a href="index3.html" class="next" id="nextBtn">Next →</a>
+
+<script>
+  // Page transition on button click
+  document.querySelectorAll('.next').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.preventDefault();
+      document.body.classList.add('fade-out');
+      setTimeout(() => {
+        window.location.href = btn.href;
+      }, 600);
+    });
+  });
+
+  // show text after heart completes
+  setTimeout(()=>{
+    document.getElementById("msg").style.opacity = 1;
+  },5200);
+
+  // start heartbeat + show next
+  setTimeout(()=>{
+    document.getElementById("heartWrap").classList.add("beat");
+    document.getElementById("nextBtn").style.opacity = 1;
+    startPopHearts();
+  },8200);
+
+  // Function to create popping hearts
+  function startPopHearts(){
+    function createHeart(){
+      const heart = document.createElement("div");
+      heart.classList.add("popping-heart");
+      heart.textContent = "❤️";
+      
+      const randomX = Math.random() * window.innerWidth;
+      heart.style.left = randomX + "px";
+      heart.style.bottom = "0px";
+      
+      document.body.appendChild(heart);
+      
+      setTimeout(()=>{
+        heart.classList.add("active");
+      },10);
+      
+      setTimeout(()=>{
+        heart.remove();
+      },1600);
+    }
+    
+    const heartInterval = setInterval(createHeart, 300);
+    
+    setTimeout(()=>{
+      clearInterval(heartInterval);
+    },8000);
+  }
+  
+  // Start hearts immediately
+  startPopHearts();
+</script>
+
+</body>
+</html>

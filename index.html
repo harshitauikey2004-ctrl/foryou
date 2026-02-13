@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>For You ❤️</title>
+
+  <style>
+    body{
+      margin:0;
+      height:100vh;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      background:#5b3a29;
+      font-family:'Poppins', sans-serif;
+      animation:pageIn 0.8s ease-in;
+    }
+
+    @keyframes pageIn{
+      from{opacity:0;}
+      to{opacity:1;}
+    }
+
+    @keyframes pageOut{
+      from{opacity:1;}
+      to{opacity:0;}
+    }
+
+    body.fade-out{
+      animation:pageOut 0.6s ease-out forwards;
+    }
+
+    .container{
+      text-align:center;
+      color:#fffaf0;
+    }
+
+    h1{
+      font-size:2.4rem;
+      margin-bottom:5px;
+      margin:0;
+      min-height:60px;
+    }
+
+    p{
+      font-size:1.2rem;
+      margin-bottom:0;
+      margin:0;
+      min-height:30px;
+    }
+
+    /* Typewriter cursor */
+    .typewriter-cursor{
+      display:inline-block;
+      width:2px;
+      height:1em;
+      background:#e07a8d;
+      margin-left:4px;
+      animation:blink 1s infinite;
+    }
+
+    @keyframes blink{
+      0%, 49%{opacity:1;}
+      50%, 100%{opacity:0;}
+    }
+
+    a{
+      text-decoration:none;
+      padding:12px 28px;
+      border-radius:30px;
+      background:#e07a8d;
+      color:white;
+      font-size:1rem;
+      transition:all 0.3s ease;
+      display:inline-block;
+      position:relative;
+      box-shadow:0 4px 15px rgba(224, 122, 141, 0.3);
+    }
+
+    a:hover{
+      background:#ff9aa2;
+      transform:scale(1.08);
+      box-shadow:0 6px 25px rgba(224, 122, 141, 0.5);
+    }
+
+    a:active{
+      transform:scale(0.95);
+    }
+
+    .popping-heart{
+      position:fixed;
+      pointer-events:none;
+      font-size:2rem;
+      z-index:10;
+    }
+
+    @keyframes popUp{
+      0%{
+        transform:translateY(0) scale(0.5);
+        opacity:1;
+      }
+      100%{
+        transform:translateY(-120px) scale(1);
+        opacity:0;
+      }
+    }
+
+    .popping-heart.active{
+      animation:popUp 1.5s ease-out forwards;
+    }
+
+    /* Floating background elements */
+    .floating-element{
+      position:fixed;
+      font-size:3rem;
+      opacity:0.08;
+      pointer-events:none;
+      z-index:1;
+      animation:float 20s infinite ease-in-out;
+    }
+
+    @keyframes float{
+      0%, 100%{
+        transform:translateY(0px) translateX(0px);
+      }
+      50%{
+        transform:translateY(-30px) translateX(20px);
+      }
+    }
+
+    .text-box{
+      background:rgba(224, 122, 141, 0.15);
+      border:2px solid #e07a8d;
+      border-radius:15px;
+      padding:20px 30px;
+      margin-bottom:20px;
+      max-width:400px;
+      box-shadow:0 0 20px rgba(224, 122, 141, 0.4), inset 0 0 15px rgba(224, 122, 141, 0.1);
+      backdrop-filter:blur(10px);
+      animation:slideIn 1s ease forwards;
+    }
+
+    @keyframes slideIn{
+      from{
+        opacity:0;
+        transform:translateY(-20px);
+      }
+      to{
+        opacity:1;
+        transform:translateY(0);
+      }
+    }
+
+    .text-box-content{
+      font-size:1.1rem;
+      line-height:1.6;
+      color:#fffaf0;
+    }
+  </style>
+</head>
+<body>
+  <!-- Floating background elements -->
+  <div class="floating-element" style="top:10%; left:5%;">💕</div>
+  <div class="floating-element" style="top:50%; right:8%; animation-delay:2s;">✨</div>
+  <div class="floating-element" style="bottom:15%; left:8%; animation-delay:4s;">💕</div>
+
+  <div class="container">
+    <div class="text-box">
+      <h1 id="title">hey baby ❤️</h1>
+      <p id="subtitle">Here's a surprise for you</p>
+    </div>
+    
+    <a href="index2.html" class="next-btn">Next →</a>
+  </div>
+
+<script>
+  // Typewriter effect function
+  function typewriterEffect(element, text, speed = 50) {
+    element.textContent = '';
+    let index = 0;
+    const cursor = document.createElement('span');
+    cursor.className = 'typewriter-cursor';
+    element.appendChild(cursor);
+
+    function type() {
+      if (index < text.length) {
+        const char = document.createTextNode(text[index]);
+        element.insertBefore(char, cursor);
+        index++;
+        setTimeout(type, speed);
+      }
+    }
+    type();
+  }
+
+  // Initialize typewriter effects
+  window.addEventListener('DOMContentLoaded', () => {
+    setTimeout(() => {
+      typewriterEffect(document.getElementById('title'), 'hey baby ❤️', 60);
+      typewriterEffect(document.getElementById('subtitle'), 'Here\'s a surprise for you', 50);
+    }, 300);
+  });
+
+  // Get the audio element - REMOVED
+  
+  // PAGE 1: Simple page transition
+  document.querySelectorAll('.next-btn').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.preventDefault();
+      document.body.classList.add('fade-out');
+      setTimeout(() => {
+        window.location.href = btn.href;
+      }, 600);
+    });
+  });
+
+  // Popping hearts
+  function startPopHearts(){
+    function createHeart(){
+      const heart = document.createElement("div");
+      heart.classList.add("popping-heart");
+      heart.textContent = "❤️";
+      
+      const randomX = Math.random() * window.innerWidth;
+      heart.style.left = randomX + "px";
+      heart.style.bottom = "0px";
+      
+      document.body.appendChild(heart);
+      
+      setTimeout(()=>{
+        heart.classList.add("active");
+      },10);
+      
+      setTimeout(()=>{
+        heart.remove();
+      },1600);
+    }
+    
+    const heartInterval = setInterval(createHeart, 300);
+    
+    setTimeout(()=>{
+      clearInterval(heartInterval);
+    },8000);
+  }
+  
+  startPopHearts();
+</script>
+
+</body>
+</html>
